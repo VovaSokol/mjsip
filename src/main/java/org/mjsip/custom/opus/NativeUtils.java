@@ -63,6 +63,7 @@ public class NativeUtils {
         }
 
         for (String lib : libs) {
+            System.out.println("LOAD LIB: " + lib);
             System.loadLibrary(lib);
         }
     }

@@ -28,6 +28,8 @@ public class TestFFmpeg {
             arch = "x86";
         }
 
+        System.out.println("SYSTEM: " + arch);
+
         try{
             NativeUtils.loadLibraryFromJar("/lib/" + arch, new String[] {"videostreamer_jni"});
         }catch (Exception e){
