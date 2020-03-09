@@ -37,30 +37,16 @@ public class TestFFmpeg {
         }
     }
     public static void main(String[] args) throws IOException {
-        TestFFmpeg test = new TestFFmpeg(1280, 720, 25);
+        TestFFmpeg test = new TestFFmpeg();
         // Mac
 //        test.startAndWait("h264_videotoolbox");
 
         // Others
 //         test.startAndWait(null, true);
     }
-
-    private final int width;
-    private final int height;
-    private final int framerate;
-    private final float framePts;
     private  FFmpeg ffmpeg;
-    private  FFmpeg ffmpeg1;
-    private  FFprobe fFprobe;
     private  Thread thread;
-    private Process process;
-
-    public TestFFmpeg(int width, int height, int framerate) {
-        this.width = width;
-        this.height = height;
-        this.framerate = framerate;
-        this.framePts = (1000f / framerate) * 90f;
-    }
+    private  Process process;
 
     private native int startVideoStreaming(String host, int port, int height, int width, int fps);
     private native int stopVideoStreaming();
@@ -76,9 +62,13 @@ public class TestFFmpeg {
         // -f alsa -i hw:CARD=PCH,DEV=0 -acodec opus -strict -2 -ac 2 -ab 32k -an
         // -f rtp rtp://127.0.0.1:20235 -protocol_whitelist "file,http,https,tcp,tls,crypto,rtp"
 
-        ffmpeg = FFmpeg.atPath(Paths.get("/usr/local/bin/"))//
+        process = Runtime.getRuntime().exec(String.format("/usr/bin/v4l2-ctl -v width="+String.valueOf(TestFFmpeg.videoWidth) +
+                                                          ",height="+String.valueOf(TestFFmpeg.videoHeight) +
+                                                          ",pixelformat=yuv420p"));
+
+        ffmpeg = FFmpeg.atPath(Paths.get("/usr/bin/"))//
 //                    .addArgument("-re") //linux video
-                .addArguments("-protocol_whitelist","file,http,https,tcp,tls,crypto,rtp")
+//                .addArguments("-protocol_whitelist","file,http,https,tcp,tls,crypto,rtp")
                 .addArguments("-f","video4linux2")
                 .addArguments("-i","/dev/video0")
 //                .addArguments("-f","alsa")
@@ -87,24 +77,25 @@ public class TestFFmpeg {
                 .addOutput(//
                         UrlOutput.toUrl("rtp://" + host_addrs[0] + "?localrtpport=" + UserAgent.videoLocalPort)//
                                 .addArgument("-an")
-//                                .setPixelFormat("yuv420p")// vova dell e6440
+                                .setPixelFormat("yuv420p")// vova dell e6440
 //                                .setPixelFormat("YU12")// rpi3
                                 .addArguments("-payload_type","96")
 //                                .addArguments("-r","10")
 //                                .addArguments("-profile:v","baseline") //video cam
 //                                .addArguments("-level:v","4.1") //video cam
 //                                .addArguments("-preset","ultrafast") //video cam
-                                .addArguments("-tune","zerolatency") //video cam
+//                                .addArguments("-tune","zerolatency") //video cam
 //                                .addArguments("-filter:v","crop=850:570:200:150") //video cam
 //                                .addArguments("-tune","film") //video cam
-//                                .addArguments("-crf", "51")
-//                                .addArguments("-b:v", "800K")
-//                                .addArguments("-r", "30")
+//                                .addArguments("-q", "31") //2-31
+                                .addArguments("-b:v", "640K")
+                                .addArguments("-r", String.valueOf(TestFFmpeg.videoFps))
 //                                .addArguments("-bufsize", "1536K")
-                                .addArguments("-s","480x640") //video cam
+                                .addArguments("-s",String.valueOf(TestFFmpeg.videoWidth) + "x" + String.valueOf(TestFFmpeg.videoHeight)) //video cam
 //                                .addArguments("-s","300x400") //video cam
 //                                .addArguments("-s","720x1280") //video cam
-                                .setCodec(StreamType.VIDEO, "libopenh264")//
+//                                .setCodec(StreamType.VIDEO, "libopenh264")//
+                                .setCodec(StreamType.VIDEO, "h264_omx")//
 //                                .addArguments("-sdp_file","video.sdp")
                                 .setFormat("rtp")//
                 )
@@ -132,13 +123,7 @@ public class TestFFmpeg {
                 )*/;
 //        ffmpeg.execute();
 
-        /*try{
-            System.out.println("Address: " + host_addrs[2] + " port: " + host_addrs[3]);
-            process = Runtime.getRuntime().exec(String.format("/usr/bin/raspivid -fps 30 -h 1280 -w 720 -vf -n -t 0 -b 2000000 -o - | /usr/bin/gst-launch-1.0 -v fdsrc ! h264parse ! rtph264pay config-interval=1 pt=96 ! gdppay ! tcpserversink port=" + host_addrs[3]));
-        }catch (IOException e){
-            System.out.println("Cannot run video! " + e.getMessage());
-        }
-
+/*
         thread = new Thread(() -> {
             try {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
@@ -161,20 +146,46 @@ public class TestFFmpeg {
             System.out.println(host_addr);
         }
         thread = new Thread(() -> {
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-
-            }
-            this.startVideoStreaming(host_addrs[2], Integer.parseInt(host_addrs[3]), videoHeight, videoWidth, videoFps);
+            /*try{
+//                System.out.println("Address: " + host_addrs[2] + " port: " + host_addrs[3]);
+//            process = Runtime.getRuntime().exec(String.format("/usr/bin/raspivid -fps 30 -h 1280 -w 720 -vf -n -t 0 -b 2000000 -o - | /usr/bin/gst-launch-1.0 -v fdsrc ! h264parse ! rtph264pay config-interval=1 pt=96 ! gdppay ! tcpserversink port=" + host_addrs[3]));
+                String run = "/usr/bin/v4l2-ctl -v width="+String.valueOf(TestFFmpeg.videoWidth)+
+                             ",height="+String.valueOf(TestFFmpeg.videoHeight)+
+                             ",pixelformat=yuv420p && /usr/bin/ffmpeg" +
+                             " -n -f video4linux2 -i /dev/video0 -f rtp -c:v h264_omx -pix_fmt yuv420p" +
+                             " -an -payload_type 96 -b:v 640K -r "+String.valueOf(TestFFmpeg.videoFps)+
+                             " -s "+String.valueOf(TestFFmpeg.videoWidth)+"x"+
+                             String.valueOf(TestFFmpeg.videoHeight) + " rtp://" + host_addrs[0];
+//                System.out.println("Process run: " + run);
+//                process = Runtime.getRuntime().exec(run);
+                *//*new Thread(() -> {
+                    try {
+                        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+                        String line;
+                        System.out.println("Process output: START");
+                        while ((line = bufferedReader.readLine()) != null) {
+                            System.out.println("Process output: " + line);
+                        }
+                        System.out.println("Process output: END");
+                        process.getInputStream().close();
+                        bufferedReader.close();
+                    }catch (IOException e){
+                        System.out.println("Cannot read from process. IOException!");
+                    }
+                });*//*
+            }catch (IOException e){
+                System.out.println("Cannot run video! " + e.getMessage());
+            }*/
+            ffmpeg.execute();
+//            this.startVideoStreaming(host_addrs[2], Integer.parseInt(host_addrs[3]), videoHeight, videoWidth, videoFps);
         });
         thread.start();
         System.out.println("===================== STREAM START ===========================");
     }
     public void stop(){
-        this.stopVideoStreaming();
+//        this.stopVideoStreaming();
+        process.destroy();
         thread.interrupt();
         System.out.println("===================== STREAM STOP ===========================");
-//        process.destroy();
     }
 }

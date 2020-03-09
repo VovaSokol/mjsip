@@ -112,14 +112,14 @@ public class SimpleAudioSystem {
 				dst = AudioSystem.getTargetDataLine(audioFormat, info);
 				System.out.println("dstDataLine OK " + dst.getLineInfo());
 			} catch (Exception var13) {
-				var13.printStackTrace();
+				System.out.println("Error: dstDataLine not supported");
 			}
 
 			try {
 				src = AudioSystem.getSourceDataLine(audioFormat, info);
 				System.out.println("srcDataLine OK " + src.getLineInfo());
 			} catch (Exception var12) {
-				var12.printStackTrace();
+				System.out.println("Error: srcDataLine not supported");
 			}
 
 			if(dst != null && src != null){

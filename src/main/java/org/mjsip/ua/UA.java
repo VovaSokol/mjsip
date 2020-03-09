@@ -156,9 +156,9 @@ public class UA {
 		}
 		try {
 			String serverIp = "192.168.0.135:5160";
-			String username = "103";
-			String pass = "test";
-			String callTo = "100";
+			String username = "14";
+			String pass = "qrqfakFXWb";
+			String callTo = "2128";
 
 			// init SipStack
 			SimpleAudioSystem.begin_mixer_from = 0;

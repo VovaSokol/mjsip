@@ -187,7 +187,7 @@ public class NativeVideoStreamer implements MediaStreamer, RtpStreamSenderListen
 
 		// try to start the media application
 		try {
-			testFFmpeg = new TestFFmpeg(1280, 720, 25);
+			testFFmpeg = new TestFFmpeg();
 			testFFmpeg.startAndWait(args);
 //			media_process=Runtime.getRuntime().exec(String.format("/usr/local/bin/ffmpeg -n -protocol_whitelist file,http,https,tcp,tls,crypto,rtp -f video4linux2 -i /dev/video0 -f rtp -r 15 -c:v libopenh264 -pix_fmt yuv420p -an -payload_type 96 -profile:v baseline -level:v 3.0 -tune zerolatency -s 640x480 rtp://" + args[0] + "?localrtpport=" + UserAgent.videoLocalPort));
 //			media_process=Runtime.getRuntime().exec(String.format("/usr/local/bin/ffmpeg -n -protocol_whitelist file,http,https,tcp,tls,crypto,rtp -f alsa -i hw:CARD=PCH,DEV=0 -f rtp -c:a opus -strict -2 -ac 2 rtp://" + args[1] + "?localrtpport=" + UserAgent.audioLocalPort));
