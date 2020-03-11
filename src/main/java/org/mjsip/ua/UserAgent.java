@@ -562,6 +562,13 @@ public class UserAgent extends CallListenerAdapter implements SipProviderListene
 		}
 	}
 
+	public String getCallId(){
+		if(call != null){
+			return call.getCallId();
+		}
+		return null;
+	}
+
 
 	// ********************** protected methods **********************
 

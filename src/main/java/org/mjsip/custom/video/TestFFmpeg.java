@@ -21,7 +21,7 @@ public class TestFFmpeg {
     public static int videoFps = 25;
 
     static {
-        String arch;
+        /*String arch;
         if (System.getProperty("os.arch").equals("arm")) {
             arch = "arm";
         } else {
@@ -34,7 +34,7 @@ public class TestFFmpeg {
             NativeUtils.loadLibraryFromJar("/lib/" + arch, new String[] {"videostreamer_jni"});
         }catch (Exception e){
             e.printStackTrace();
-        }
+        }*/
     }
     public static void main(String[] args) throws IOException {
         TestFFmpeg test = new TestFFmpeg();
@@ -89,6 +89,7 @@ public class TestFFmpeg {
 //                                .addArguments("-tune","film") //video cam
 //                                .addArguments("-q", "31") //2-31
                                 .addArguments("-b:v", "640K")
+//                                .addArguments("-b:v", "1024K")
                                 .addArguments("-r", String.valueOf(TestFFmpeg.videoFps))
 //                                .addArguments("-bufsize", "1536K")
                                 .addArguments("-s",String.valueOf(TestFFmpeg.videoWidth) + "x" + String.valueOf(TestFFmpeg.videoHeight)) //video cam
