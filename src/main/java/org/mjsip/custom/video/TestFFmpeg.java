@@ -19,6 +19,7 @@ public class TestFFmpeg {
     public static int videoWidth = 480;
     public static int videoHeight = 640;
     public static int videoFps = 25;
+    public static String videoBitrateK = "640K";
 
     static {
         /*String arch;
@@ -88,7 +89,7 @@ public class TestFFmpeg {
 //                                .addArguments("-filter:v","crop=850:570:200:150") //video cam
 //                                .addArguments("-tune","film") //video cam
 //                                .addArguments("-q", "31") //2-31
-                                .addArguments("-b:v", "640K")
+                                .addArguments("-b:v", TestFFmpeg.videoBitrateK)
 //                                .addArguments("-b:v", "1024K")
                                 .addArguments("-r", String.valueOf(TestFFmpeg.videoFps))
 //                                .addArguments("-bufsize", "1536K")
