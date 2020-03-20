@@ -102,50 +102,6 @@ public class NativeVideoStreamer implements MediaStreamer, RtpStreamSenderListen
 		this.args=args;
 		this.local_port=local_port;
 		this.remote_port=remote_port;
-
-		/*int frame_size=1*DEFAULT_FRAME_SIZE;
-		int frame_rate=DEFAULT_FRAME_RATE;
-		long packet_time= DEFAULT_PACKET_TIME;
-		int packet_size=(int)(frame_rate*frame_size*DEFAULT_PACKET_TIME/1000);
-		System.out.println("packet size: "+packet_size+ "B");
-		System.out.println("packet time: "+packet_time+ "ms");
-		System.out.println("packet rate: "+(1000/packet_time)+ "pkt/s");
-
-        try {
-            udp_socket=new UdpSocket(local_port);
-            InputStream videoInputCamToh264 = new UDPInputStream("localhost",34999);
-
-            rtp_sender=new RtpStreamSender(videoInputCamToh264,false,payload_type,sample_rate,1,packet_time,packet_size,null,udp_socket,remote_addr,remote_port,this);
-
-            video_input=true;
-
-            // 7) receiver
-            System.out.println("new video receiver on "+local_port);
-            OutputStream videoOutputH264ToFFmpeg = new UDPOutputStream("localhost",35999);
-            // receiver
-            rtp_receiver=new RtpStreamReceiver(videoOutputH264ToFFmpeg,null,udp_socket,this);
-//            rtp_receiver.setRED(random_early_drop);
-            video_output=true;
-            // RTCP
-            rtp_control=new RtpControl(null,udp_socket.getLocalPort()+1,remote_addr,remote_port+1);
-            if (rtp_sender!=null) rtp_sender.setControl(rtp_control);
-            // SEQUENCE CHECK
-
-            rtp_receiver.setSequenceCheck(false);
-
-            // SILENCE PADDING
-            rtp_receiver.setSilencePadding(false);
-        }
-        catch (Exception e) {  System.out.println(e);  }
-        System.out.println("DEBUG: Frame rate: "+frame_rate+" frame/s");
-        System.out.println("DEBUG: Frame size: "+frame_size+" B");
-        System.out.println("DEBUG: Packet time: "+packet_time+" ms");
-        System.out.println("DEBUG: Packet rate: "+(1000/packet_time)+" pkt/s");
-        System.out.println("DEBUG: Packet size: "+packet_size+" B");*/
-//        System.out.println("DEBUG: Random early drop at receiver: 1 packet out of "+random_early_drop);
-
-
-
 	}
 	private TestFFmpeg testFFmpeg;
 
@@ -178,19 +134,10 @@ public class NativeVideoStreamer implements MediaStreamer, RtpStreamSenderListen
 			log("local_port==remote_port --> no UDP relay is needed");
 		}
 
-		//debug...
-//		command += "localhost:" + local_port;
-	 
-//		String cmds[]=new String[((args!=null)?args.length:0)+1];
-//		cmds[0]=command;
-//		for (int i=1; i<cmds.length; i++) cmds[i]=args[i-1];
-
 		// try to start the media application
 		try {
 			testFFmpeg = new TestFFmpeg();
 			testFFmpeg.startAndWait(args);
-//			media_process=Runtime.getRuntime().exec(String.format("/usr/local/bin/ffmpeg -n -protocol_whitelist file,http,https,tcp,tls,crypto,rtp -f video4linux2 -i /dev/video0 -f rtp -r 15 -c:v libopenh264 -pix_fmt yuv420p -an -payload_type 96 -profile:v baseline -level:v 3.0 -tune zerolatency -s 640x480 rtp://" + args[0] + "?localrtpport=" + UserAgent.videoLocalPort));
-//			media_process=Runtime.getRuntime().exec(String.format("/usr/local/bin/ffmpeg -n -protocol_whitelist file,http,https,tcp,tls,crypto,rtp -f alsa -i hw:CARD=PCH,DEV=0 -f rtp -c:a opus -strict -2 -ac 2 rtp://" + args[1] + "?localrtpport=" + UserAgent.audioLocalPort));
 			return true;
 		}
 		catch (Exception e) {

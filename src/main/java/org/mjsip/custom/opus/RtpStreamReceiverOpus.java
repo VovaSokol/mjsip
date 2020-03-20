@@ -287,13 +287,7 @@ public class RtpStreamReceiverOpus extends Thread implements RtpControlledReceiv
 						int unformatted_len=(rtp_payload_format!=null)? rtp_payload_format.removeRtpPayloadFormat(payload_buf,payload_off,payload_len) : payload_len;
 
 						// write the payload data to the output_stream
-//						try {
-							output_stream.write(payload_buf,payload_off,unformatted_len);
-//						}
-//						catch (IOException e) {
-//							System.out.println("DEBUG: RtpStreamReceiver: write(buf,off="+payload_off+", len="+unformatted_len+"): error: "+e);
-//							e.printStackTrace();
-//						}
+						output_stream.write(payload_buf,payload_off,unformatted_len);
 					}
 					// check whether remote socket address is changed
 					SocketAddress source_soaddr=rtp_socket.getRemoteSourceSoAddress();

@@ -54,16 +54,6 @@ import javax.sound.sampled.Mixer;
   * directly from comman-line before starting the proper UA (GraphicalUA or CommandLineUA).
   */
 public class UA {
-	static {
-		System.out.println( System.getProperty("java.library.path"));
-		try {/*
-			System.loadLibrary("opus");
-			System.loadLibrary("opusjni");
-			System.out.println("Loaded Libs");*/
-		}catch (Exception e){
-			e.printStackTrace();
-		}
-	}
 
 	/** No GUI */ 
 	protected static Boolean no_gui=new Boolean(false);
@@ -220,38 +210,11 @@ public class UA {
 
 			ua_profile.proxy = serverIp;
 
-//			ua_profile.bin_vic = "/usr/local/bin/ffmpeg -f v4l2 -i /dev/video0 -vcodec libopenh264 -vb 32k -vc 1 -f rtp rtp://";
 			ua_profile.bin_vic = "/usr/local/bin/ffmpeg -f v4l2 -i /dev/video0 -vcodec libopenh264 -payload_type 97 -f rtp rtp://";
 
 			RtpStreamSenderOpus.DEBUG = true;
 			RtpStreamReceiverOpus.DEBUG = true;
 			SimpleAudioSystem.DEBUG = true;
-			/*FFmpeg.atPath(Paths.get("/usr/local/bin/"))//
-					.addArguments("-protocol_whitelist","file,http,https,tcp,tls,crypto,rtp")
-					.addArguments("-f","video4linux2")
-					.addArguments("-i","/dev/video0")
-					.addOutput(//
-							UrlOutput.toUrl("udp://127.0.0.1:34999")//
-									.addArgument("-an")
-									.setPixelFormat("yuv420p")// vova dell e6440
-//									.addArguments("-payload_type","96")
-									.addArguments("-profile:v","baseline") //video cam
-									.addArguments("-level:v","3.0") //video cam
-									.addArguments("-tune","zerolatency") //video cam
-									.setFrameRate(15) //video cam
-									.addArguments("-s","640x480") //video cam
-									.setCodec(StreamType.VIDEO, "libopenh264")//
-									.setFormat("h264")//
-					).execute();*/
-
-
-
-//			Process process = Runtime.getRuntime().exec(String.format("/usr/local/bin/ffmpeg -n -protocol_whitelist file,http,https,tcp,tls,crypto,rtp -f video4linux2 -i /dev/video0 -f h264 -r 15 -c:v libopenh264 -pix_fmt yuv420p -an -profile:v baseline -level:v 3.0 -tune zerolatency -s 640x480 udp://127.0.0.1:34999"));
-//			Process process1 = Runtime.getRuntime().exec(String.format("/usr/local/bin/ffmpeg -i udp://127.0.0.1:35999 -f h264 -r 15 -c:v libopenh264 -pix_fmt yuv420p -an -profile:v baseline -level:v 3.0 -tune zerolatency -s 640x480 udp://127.0.0.1:36999"));
-
-//			process.destroy();
-//			Runtime.getRuntime().exec(String.format("/usr/bin/raspivid -fps 30 -h 1280 -w 720 -vf -n -t 0 -b 2000000 -o - | gst-launch-1.0 -v fdsrc ! h264parse ! rtph264pay config-interval=1 pt=96 ! gdppay ! tcpserversink host=192.168.0.108 port=5000"));
-
 			return true;
 		}
 		catch (Exception e) {			

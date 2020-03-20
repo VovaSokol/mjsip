@@ -78,10 +78,6 @@ public class OpusOutputStream extends AudioOutputStream {
                             int count = opusStorage.getDecoder().decode(array, arrayForDecode, FRAME_SIZE);
                             player.write(arrayForDecode, 0, arrayForDecode.length);
 //                            System.out.println("Opus Decoder decoded: " + count);
-                        } else {
-//                        soundQueue.clear();
-//                        player.stop();
-//                        break;
                         }
                     }
                     Thread.sleep(1);

@@ -103,33 +103,6 @@ public class OpusInputStream extends AudioInputStream {
             line.open(format);
             line.start();
             opusStorage.getEncoder().init(SoundRecorder.SAMPLE_RATE, SoundRecorder.NUM_CHANNELS, OpusEncoder.OPUS_APPLICATION_VOIP);
-            /*recordingThread = new Thread(() -> {
-                System.out.println("========= OPUS MIC ENCODER THREAD STARTED " + Thread.currentThread().getName());
-                int numOfBytesRead;
-                byte[] arrayToRemmember = new byte[line.getBufferSize() / 5];
-                opusStorage.getEncoder().init(SoundRecorder.SAMPLE_RATE, SoundRecorder.NUM_CHANNELS, OpusEncoder.OPUS_APPLICATION_VOIP);
-                while (isRecording) {
-                    numOfBytesRead = line.read(arrayToRemmember, 0, READ_BYTES_FROM_MIC);
-                    if (arrayToRemmember != null && arrayForEncode != null) {
-                        int encoded = opusStorage.getEncoder().encode(arrayToRemmember, FRAME_SIZE, arrayForEncode);
-                        soundQueue.add(Arrays.copyOf(arrayForEncode, encoded));
-//                        System.err.println(encoded);
-                    }
-                    try {
-                        Thread.sleep(1L);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                        line.close();
-                        opusStorage.getEncoder().close();
-                        isRecording = false;
-                        isAllMsgRecorded = true;
-                    }
-                }
-                line.close();
-                opusStorage.getEncoder().close();
-                System.out.println("========= OPUS MIC ENCODER THREAD ENDED " + Thread.currentThread().getName());
-            }, "AudioRecorder Thread");
-            recordingThread.start();*/
         } catch (LineUnavailableException e) {
             e.printStackTrace();
         }

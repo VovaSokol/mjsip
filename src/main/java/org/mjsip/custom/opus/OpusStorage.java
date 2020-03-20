@@ -7,9 +7,7 @@ class OpusStorage {
 
     public OpusStorage() {
         decoder = new OpusDecoder();
-//        decoder.init(SoundRecoder.SAMPLE_RATE, SoundRecoder.NUM_CHANNELS);
         encoder = new OpusEncoder();
-//        encoder.init(SoundRecoder.SAMPLE_RATE, SoundRecoder.NUM_CHANNELS, OpusEncoder.OPUS_APPLICATION_VOIP);
     }
 
     synchronized OpusDecoder getDecoder() {
