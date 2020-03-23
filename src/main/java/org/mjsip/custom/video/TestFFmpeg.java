@@ -21,9 +21,14 @@ public class TestFFmpeg {
     private  Process process;
 
     public void startAndWait(String[] host_addrs) throws IOException {
-        process = Runtime.getRuntime().exec(String.format("/usr/bin/v4l2-ctl -v width=" + TestFFmpeg.videoWidth +
+        /*process = Runtime.getRuntime().exec(String.format("/usr/bin/v4l2-ctl -v width=" + TestFFmpeg.videoWidth +
                                                           ",height=" + TestFFmpeg.videoHeight +
-                                                          ",pixelformat=yuv420p"));
+                                                          ",pixelformat=yuv420p"));*/
+
+        String videoCodec = "libx264";
+        if(System.getProperty("os.arch").toLowerCase().equals("arm")){
+            videoCodec = "h264_omx";
+        }
 
         ffmpeg = FFmpeg.atPath(Paths.get("/usr/bin/"))//
                 .addArguments("-f","video4linux2")
@@ -38,9 +43,10 @@ public class TestFFmpeg {
                                 .addArguments("-g", "30")
                                 .addArguments("-r", String.valueOf(TestFFmpeg.videoFps))
                                 .addArguments("-s", TestFFmpeg.videoWidth + "x" + TestFFmpeg.videoHeight) //video cam
-                                .setCodec(StreamType.VIDEO, "h264_omx")//
+                                .setCodec(StreamType.VIDEO, videoCodec)//
                                 .setFormat("rtp")//
                 );
+        System.out.println(ffmpeg.toString());
         System.out.println("===================== RTP DATA ===========================");
         for (String host_addr : host_addrs) {
             System.out.println(host_addr);
