@@ -21,9 +21,9 @@ public class TestFFmpeg {
     private  Process process;
 
     public void startAndWait(String[] host_addrs) throws IOException {
-        /*process = Runtime.getRuntime().exec(String.format("/usr/bin/v4l2-ctl -v width=" + TestFFmpeg.videoWidth +
+        process = Runtime.getRuntime().exec(String.format("/usr/bin/v4l2-ctl -v width=" + TestFFmpeg.videoWidth +
                                                           ",height=" + TestFFmpeg.videoHeight +
-                                                          ",pixelformat=yuv420p"));*/
+                                                          ",pixelformat=yuv420p"));
 
         String videoCodec = "libx264";
         if(System.getProperty("os.arch").toLowerCase().equals("arm")){
