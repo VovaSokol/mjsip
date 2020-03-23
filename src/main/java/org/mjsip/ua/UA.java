@@ -21,19 +21,9 @@
 
 package org.mjsip.ua;
 
-
-
 import java.io.PrintStream;
-import java.nio.file.Paths;
-import java.util.Vector;
-
-import com.github.kokorin.jaffree.StreamType;
-import com.github.kokorin.jaffree.ffmpeg.FFmpeg;
-import com.github.kokorin.jaffree.ffmpeg.UrlOutput;
 import org.mjsip.custom.opus.RtpStreamReceiverOpus;
 import org.mjsip.custom.opus.RtpStreamSenderOpus;
-import org.mjsip.media.RtpStreamReceiver;
-import org.mjsip.media.RtpStreamSender;
 import org.mjsip.sip.address.NameAddress;
 import org.mjsip.sip.address.SipURI;
 import org.mjsip.sip.provider.SipProvider;
@@ -42,9 +32,6 @@ import org.mjsip.ua.cli.UserAgentCli;
 import org.mjsip.ua.gui.UserAgentGui;
 import org.zoolu.sound.SimpleAudioSystem;
 import org.zoolu.util.Flags;
-
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Mixer;
 
 
 /** Simple SIP UA (User Agent) that can be executed with a GUI (it runs a GraphicalUA)
@@ -70,7 +57,6 @@ public class UA {
 
 	/** UserAgentProfile */ 
 	public static UserAgentProfile ua_profile=null;
-
 
 	/** Parses command-line options and inits the SIP stack, a SIP provider and an UA profile. */
 	public static boolean init(String program, String[] args) {
@@ -145,19 +131,19 @@ public class UA {
 			return false;
 		}
 		try {
-			String serverIp = "192.168.0.135:5160";
-			String username = "14";
-			String pass = "qrqfakFXWb";
-			String callTo = "2128";
+			String serverIp = "192.168.0.3:5160";
+			String username = "11";
+			String pass = "hwBkSanjgo";
+			String callTo = "2131";
 
 			// init SipStack
 			SimpleAudioSystem.begin_mixer_from = 0;
 
-			for (Mixer.Info info : AudioSystem.getMixerInfo()) {
+			/*for (Mixer.Info info : AudioSystem.getMixerInfo()) {
 				System.out.println("descr: <" + info.getDescription() +"> name: <"+ info.getName() + "> vend: <" +
 						info.getVendor() + ">");
 			}
-
+*/
 			SipStack.init(config_file);
 			SipStack.debug_level = 100;
 			if (log_path!=null) SipStack.log_path=log_path;

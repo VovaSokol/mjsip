@@ -1,18 +1,13 @@
 package org.mjsip.custom.opus;
 
+import org.mjsip.custom.LibraryLoader;
+
 public class OpusDecoder {
     static {
-        String arch;
-        if (System.getProperty("os.arch").equals("arm")) {
-            arch = "arm";
-        } else {
-            arch = "x86";
-        }
-
         try{
-            NativeUtils.loadLibraryFromJar("/lib/" + arch, new String[] {"opusjni"});
+            LibraryLoader.loadLibrary("libopusjni");
         }catch (Exception e){
-            e.printStackTrace();
+            System.out.println("Opus library not loaded: " + e.getMessage());
         }
     }
 

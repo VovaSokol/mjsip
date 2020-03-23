@@ -2,13 +2,9 @@ package org.mjsip.custom.video;
 
 import com.github.kokorin.jaffree.StreamType;
 import com.github.kokorin.jaffree.ffmpeg.*;
-import com.github.kokorin.jaffree.ffprobe.FFprobe;
-import org.mjsip.custom.opus.NativeUtils;
 import org.mjsip.ua.UserAgent;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.file.Paths;
 
 /**

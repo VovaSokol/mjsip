@@ -61,7 +61,7 @@
                             <archive>
                                 <manifest>
                                     <mainClass>
-                                        org.mjsip.custom.video.TestFFmpeg
+                                        org.mjsip.ua.UA
                                     </mainClass>
                                 </manifest>
                             </archive>
@@ -92,5 +92,5 @@
             </plugin>
         </plugins>
     </build>
-    
+
 </project>
