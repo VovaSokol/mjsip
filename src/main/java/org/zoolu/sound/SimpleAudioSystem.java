@@ -89,20 +89,20 @@ public class SimpleAudioSystem {
 
 		for(int i = begin_mixer_from; i < mixerInfo.length; ++i) {
 			Mixer.Info info = mixerInfo[i];
-			System.out.println(String.format(Locale.US, "====== MIXER INFO num: %02d ====== \ndescr: <%s> \nname: <%s> \nvend: <%s> \nver: <%s>", i, info.getDescription(), info.getName(), info.getVendor(), info.getVersion()));
+			debug(String.format(Locale.US, "====== MIXER INFO num: %02d ====== \ndescr: <%s> \nname: <%s> \nvend: <%s> \nver: <%s>", i, info.getDescription(), info.getName(), info.getVendor(), info.getVersion()));
 			Mixer mixer = AudioSystem.getMixer(info);
 			javax.sound.sampled.Line.Info[] srcLinesInfo = mixer.getSourceLineInfo();
-			System.out.println("srcLinesInfo cnt: " + srcLinesInfo.length);
+			debug("srcLinesInfo cnt: " + srcLinesInfo.length);
 
 			for(int i1 = 0; i1 < srcLinesInfo.length; ++i1) {
-				System.out.println(String.format(Locale.US, "srcLineInfo num: %02d srcLineInfo: <%s>", i1, srcLinesInfo[i1].toString()));
+				debug(String.format(Locale.US, "srcLineInfo num: %02d srcLineInfo: <%s>", i1, srcLinesInfo[i1].toString()));
 			}
 
 			javax.sound.sampled.Line.Info[] dstLinesInfo = mixer.getTargetLineInfo();
-			System.out.println("dstLinesInfo cnt: " + dstLinesInfo.length);
+			debug("dstLinesInfo cnt: " + dstLinesInfo.length);
 
 			for(int i1 = 0; i1 < dstLinesInfo.length; ++i1) {
-				System.out.println(String.format(Locale.US, "dstLineInfo num: %02d dstLineInfo: <%s>", i1, dstLinesInfo[i1].toString()));
+				debug(String.format(Locale.US, "dstLineInfo num: %02d dstLineInfo: <%s>", i1, dstLinesInfo[i1].toString()));
 			}
 
 			TargetDataLine dst = null;
@@ -110,16 +110,16 @@ public class SimpleAudioSystem {
 
 			try {
 				dst = AudioSystem.getTargetDataLine(audioFormat, info);
-				System.out.println("dstDataLine OK " + dst.getLineInfo());
+				debug("dstDataLine OK " + dst.getLineInfo());
 			} catch (Exception var13) {
-				System.out.println("Error: dstDataLine not supported");
+				error("Error: dstDataLine not supported");
 			}
 
 			try {
 				src = AudioSystem.getSourceDataLine(audioFormat, info);
-				System.out.println("srcDataLine OK " + src.getLineInfo());
+				debug("srcDataLine OK " + src.getLineInfo());
 			} catch (Exception var12) {
-				System.out.println("Error: srcDataLine not supported");
+				error("Error: srcDataLine not supported");
 			}
 
 			if(dst != null && src != null){
