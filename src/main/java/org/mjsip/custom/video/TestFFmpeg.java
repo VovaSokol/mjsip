@@ -58,7 +58,8 @@ public class TestFFmpeg {
         System.out.println("===================== STREAM START ===========================");
     }
     public void stop(){
-        process.destroy();
+        if(process != null)
+            process.destroy();
         thread.interrupt();
         System.out.println("===================== STREAM STOP ===========================");
     }
