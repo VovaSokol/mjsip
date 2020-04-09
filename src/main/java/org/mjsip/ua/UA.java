@@ -131,10 +131,12 @@ public class UA {
 			return false;
 		}
 		try {
-			String serverIp = "192.168.0.3:5160";
-			String username = "11";
-			String pass = "hwBkSanjgo";
-			String callTo = "2131";
+
+			String serverIp = "192.168.0.3:5060";
+			String username = "3";
+			String pass = "test";
+			String callTo = "1";
+
 
 			// init SipStack
 			SimpleAudioSystem.begin_mixer_from = 0;
@@ -178,6 +180,8 @@ public class UA {
 			//if (media_port>0) ua_profile.media_port=media_port;
 			if (media_port>0) ua_profile.setMediaPort(media_port);
 
+//			ua_profile.media_addr="192.168.0.5";
+			ua_profile.symmetric_rtp = true;
 			ua_profile.call_to=new NameAddress(callTo+"@"+serverIp);
 			ua_profile.display_name=username;
 			ua_profile.user=username;

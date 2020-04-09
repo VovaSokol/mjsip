@@ -76,7 +76,18 @@ public class OpusOutputStream extends AudioOutputStream {
                         byte[] array = soundQueue.poll();
                         if (arrayForDecode != null && array != null) {
                             int count = opusStorage.getDecoder().decode(array, arrayForDecode, FRAME_SIZE);
-                            player.write(arrayForDecode, 0, arrayForDecode.length);
+                            if (player == null) {
+                                try{
+                                    System.out.println("Try reinit opus output");
+                                    player.open(format);
+                                    System.out.println("Try reinit opus output SUCCESS");
+                                } catch (IllegalStateException e){
+                                    System.out.println("Try reinit opus output ERROR");
+                                }
+                                Thread.sleep(100);
+                            }else{
+                                player.write(arrayForDecode, 0, arrayForDecode.length);
+                            }
 //                            System.out.println("Opus Decoder decoded: " + count);
                         }
                     }
